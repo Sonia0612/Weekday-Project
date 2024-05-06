@@ -6,6 +6,7 @@ import {
   Button,
   Typography,
   CardHeader,
+  Avatar
 } from "@mui/material";
 
 function JobCard({ job }) {
@@ -14,13 +15,24 @@ function JobCard({ job }) {
       sx={{
         maxWidth: 370,
         margin: 5,
-        borderRadius: "20px",
+        borderRadius: 7,
         boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px",
-        padding: "5px",
+        padding: 3,
       }}
     >
+      <span
+        style={{
+          borderRadius: 10,
+          boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px",
+          padding: 5,
+        }}
+      >
+        ⏳ Posted 10 days ago
+      </span>
+
       <CardHeader
-        avatar={<img src={job?.logoUrl} width={25} height={40} />}
+      sx={{marginTop:2}}
+        avatar={<img src={job?.logoUrl} width={30} alt="logo" height={40} />}
         title={job?.companyName}
         subheader={
           <>
@@ -29,13 +41,13 @@ function JobCard({ job }) {
           </>
         }
       />
-      <span sx={{ marginLeft: "100px" }}>{job?.location}</span>
+      <span style={{ marginLeft: "60px" }}>{job?.location}</span>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div">
           Estimated Salary: ₹{job?.minJdSalary}
           {" - "}
           {job?.maxJdSalary}
-          {"  "}LPA
+          {"  "}LPA ✅ 
         </Typography>
         <Typography variant="body2" color="text.secondary">
           About Company:{" "}
@@ -43,19 +55,32 @@ function JobCard({ job }) {
         <Typography variant="body2" color="text.secondary">
           About us{" "}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          style={{ maxHeight: "200px", overflow: "hidden" }}
+        >
           {job?.jobDetailsFromCompany}
         </Typography>
-        <CardActions>
-          <Button size="small">Learn More</Button>
+        <CardActions sx={{ justifyContent: "center" }}>
+          <Button size="small">Show More</Button>
         </CardActions>
         <Typography variant="body2" color="text.secondary">
           Minimum Experience
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {job?.minExp}
+          {(job?.minExp)?(job?.minExp):0}{" "}years
         </Typography>
       </CardContent>
+      <CardActions >
+      <Button size="large" sx={{width:'100%', color:'black', backgroundColor:'rgb(85, 239, 196)', borderRadius:'8px'}}>⚡ Easy Apply</Button>
+      </CardActions>
+      <CardActions>
+      <Button size="large"  sx={{width:'100%', color:'#fff', backgroundColor:'#1a73e8', borderRadius:'8px'}}>
+      <Avatar src="/broken-image.jpg"           sx={{ width: 24, height: 24 }}
+      />
+       {" "}Ask for referral</Button>
+      </CardActions>
     </Card>
   );
 }

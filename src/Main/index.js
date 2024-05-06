@@ -12,6 +12,7 @@ const Main = () => {
 
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(10);
+  const [jobInfo, setJobInfo] = useState([]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -21,6 +22,9 @@ const Main = () => {
     dispatch(getJobsList({ limit, offset }));
     window.scrollTo(0, 0);
   }, [offset, dispatch]);
+  useEffect(() => {
+    setJobInfo(jobsList); 
+}, [jobsList]);
 
   const handleScroll = () => {
     if (
@@ -33,8 +37,8 @@ const Main = () => {
 
   return (
     <div>
-      <Header jobsList={jobsList} />
-      <Body jobsList={jobsList} loading={loading} />
+      <Header jobsList={jobsList} setJobInfo={setJobInfo} jobInfo={jobInfo}/>
+      <Body jobsList={jobsList} loading={loading} jobInfo={jobInfo}/>
     </div>
   );
 };
