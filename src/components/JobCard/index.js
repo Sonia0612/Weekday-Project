@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Card,
   CardActions,
@@ -8,7 +9,10 @@ import {
   CardHeader,
   Avatar,
 } from "@mui/material";
+
 import ShowMore from "../Modal/ShowMore";
+
+import styles from "./style.module.css";
 
 function JobCard({ job }) {
   const [openModal, setOpenModal] = useState(false);
@@ -17,7 +21,7 @@ function JobCard({ job }) {
     <div>
       <Card
         sx={{
-          maxWidth: 370,
+          maxWidth: 310,
           margin: 5,
           borderRadius: 7,
           boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px",
@@ -29,37 +33,44 @@ function JobCard({ job }) {
             borderRadius: 10,
             boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px",
             padding: 5,
+            fontSize: "10px",
           }}
         >
           ⏳ Posted 10 days ago
         </span>
 
         <CardHeader
-          sx={{ marginTop: 2 }}
-          avatar={<img src={job?.logoUrl} width={30} alt="logo" height={40} />}
-          title={job?.companyName}
+          avatar={<img src={job?.logoUrl} width={32} alt="logo" height={50} />}
+          title={
+            <div className={styles.cardHeaderBody}>
+              <div>
+                <span className={styles.headingName}>{job?.companyName}</span>
+                <p className={styles.subHeadingRole}>{job?.jobRole}</p>
+              </div>
+            </div>
+          }
           subheader={
             <>
-              <span>{job?.jobRole}</span>
-              <br />
+              <span className={styles.locationheading}>{job?.location}</span>
             </>
           }
         />
-        <span style={{ marginLeft: "60px" }}>{job?.location}</span>
         <CardContent>
-          <Typography gutterBottom component="div"  sx={{fontSize:'16px'}}>
-            Estimated Salary: ₹{job?.minJdSalary} - {job?.maxJdSalary} LPA ✅
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            About Company:
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            About us
+          <Typography gutterBottom component="div" className={styles.salary}>
+            Estimated Salary: ₹{job?.minJdSalary ? job?.minJdSalary : 0} -{" "}
+            {job?.maxJdSalary} LPA ✅
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
-            style={{ maxHeight: "200px", overflow: "hidden" }}
+            className={styles.textBold}
+          >
+            About Company:
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            className={styles.jobDetails}
           >
             {job?.jobDetailsFromCompany}
           </Typography>
@@ -83,7 +94,11 @@ function JobCard({ job }) {
               color: "black",
               backgroundColor: "rgb(85, 239, 196)",
               borderRadius: "8px",
+              "&:hover": {
+                backgroundColor: "rgb(85, 239, 196)",
+              },
             }}
+            disableElevation
           >
             ⚡ Easy Apply
           </Button>
@@ -96,7 +111,11 @@ function JobCard({ job }) {
               color: "#fff",
               backgroundColor: "#1a73e8",
               borderRadius: "8px",
+              "&:hover": {
+                backgroundColor: "#1a73e8",
+              },
             }}
+            disableElevation={true}
           >
             <Avatar src="/broken-image.jpg" sx={{ width: 24, height: 24 }} />
             Ask for referral
@@ -104,10 +123,11 @@ function JobCard({ job }) {
         </CardActions>
       </Card>
 
-      {openModal && <ShowMore job={job} openModal={openModal} setOpenModal={setOpenModal} />}
+      {openModal && (
+        <ShowMore job={job} openModal={openModal} setOpenModal={setOpenModal} />
+      )}
     </div>
   );
 }
 
 export default JobCard;
-

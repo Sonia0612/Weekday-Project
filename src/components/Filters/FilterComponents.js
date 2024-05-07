@@ -1,5 +1,9 @@
 import React from "react";
+
 import SingleSelectComponent from "./SingleSelectComponent";
+
+import { Grid } from "@mui/material";
+
 import {
   EMPLOYEES_FILTER_OPTIONS,
   EXPERIENCE_FILTER_OPTIONS,
@@ -7,7 +11,8 @@ import {
   ROLES_FILTER_OPTIONS,
   WORK_FILTER_OPTIONS,
 } from "../../constants";
-import { Grid } from "@mui/material";
+
+import styles from "./style.module.css";
 
 const FilterComponents = ({
   roleName,
@@ -37,9 +42,7 @@ const FilterComponents = ({
     );
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
-          {roleName?.length ? "Roles" : ""}
-        </p>
+        <p className={styles.label}>{roleName?.length ? "Roles" : ""}</p>
         <SingleSelectComponent
           options={categoriesWithRoles}
           onChange={(event) => {
@@ -47,17 +50,17 @@ const FilterComponents = ({
               setJobInfo(jobsList);
               setRoleName("");
             } else {
-            const title = event.value;
-            if (title) {
-              const filteredjobsList = jobInfo?.filter(
-                (job) => job.jobRole.toLowerCase() === title.toLowerCase()
-              );
-              setJobInfo(filteredjobsList);
-            } else {
-              setJobInfo(jobsList);
+              const title = event.value;
+              if (title) {
+                const filteredjobsList = jobInfo?.filter(
+                  (job) => job.jobRole.toLowerCase() === title.toLowerCase()
+                );
+                setJobInfo(filteredjobsList);
+              } else {
+                setJobInfo(jobsList);
+              }
+              setRoleName(title);
             }
-            setRoleName(title);
-          }
           }}
           label={""}
           value={roleName}
@@ -70,7 +73,7 @@ const FilterComponents = ({
   const employeesFilter = () => {
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
+        <p className={styles.label}>
           {employee?.length ? "No Of Employees" : ""}
         </p>
         <SingleSelectComponent
@@ -80,7 +83,7 @@ const FilterComponents = ({
               setJobInfo(jobsList);
               setEmployee("");
             } else {
-            setEmployee(event.value);
+              setEmployee(event.value);
             }
           }}
           label={""}
@@ -93,9 +96,7 @@ const FilterComponents = ({
   const experienceFilter = () => {
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
-          {experience?.length ? "Experience" : ""}
-        </p>
+        <p className={styles.label}>{experience?.length ? "Experience" : ""}</p>
         <SingleSelectComponent
           options={EXPERIENCE_FILTER_OPTIONS}
           onChange={(event) => {
@@ -103,18 +104,18 @@ const FilterComponents = ({
               setJobInfo(jobsList);
               setExperience("");
             } else {
-            const title = event.value;
-            if (title) {
-              const filteredjobsList = jobInfo?.filter(
-                (job) => parseInt(job.minExp) === parseInt(title)
-              );
-              setJobInfo(filteredjobsList);
-            } else {
-              setJobInfo(jobsList);
+              const title = event.value;
+              if (title) {
+                const filteredjobsList = jobInfo?.filter(
+                  (job) => parseInt(job.minExp) === parseInt(title)
+                );
+                setJobInfo(filteredjobsList);
+              } else {
+                setJobInfo(jobsList);
+              }
+              setExperience(title);
             }
-            setExperience(title);
           }}
-        }
           label={""}
           value={experience}
           placeholder="Experience"
@@ -125,9 +126,7 @@ const FilterComponents = ({
   const workFilter = () => {
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
-          {work?.length ? "Remote" : ""}
-        </p>
+        <p className={styles.label}>{work?.length ? "Remote" : ""}</p>
         <SingleSelectComponent
           options={WORK_FILTER_OPTIONS}
           onChange={(event) => {
@@ -135,21 +134,25 @@ const FilterComponents = ({
               setJobInfo(jobsList);
               setWork("");
             } else {
-            const title = event.value;
-            if (title) {
-              if (title === 'Remote') {
-                const filteredJobsList = jobInfo.filter(job => job.location.toLowerCase() === 'remote');
-                setJobInfo(filteredJobsList);
-              } else if (title === 'In-Office' || title === 'Hybrid') {
-                // Assuming 'In-Office' and 'hybrid' jobs are all non-remote jobs
-                const filteredJobsList = jobInfo.filter(job => job.location.toLowerCase() !== 'remote');
-                setJobInfo(filteredJobsList);
+              const title = event.value;
+              if (title) {
+                if (title === "Remote") {
+                  const filteredJobsList = jobInfo.filter(
+                    (job) => job.location.toLowerCase() === "remote"
+                  );
+                  setJobInfo(filteredJobsList);
+                } else if (title === "In-Office" || title === "Hybrid") {
+                  // Assuming 'In-Office' and 'hybrid' jobs are all non-remote jobs
+                  const filteredJobsList = jobInfo.filter(
+                    (job) => job.location.toLowerCase() !== "remote"
+                  );
+                  setJobInfo(filteredJobsList);
+                }
+              } else {
+                setJobInfo(jobsList);
               }
-            } else {
-              setJobInfo(jobsList);
+              setWork(title);
             }
-            setWork(title);
-          }
           }}
           label={""}
           value={work}
@@ -164,9 +167,7 @@ const FilterComponents = ({
   const payFilter = () => {
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
-          {pay?.length ? "Min Base Pay" : ""}
-        </p>
+        <p className={styles.label}>{pay?.length ? "Min Base Pay" : ""}</p>
         <SingleSelectComponent
           options={PAY_FILTER_OPTIONS}
           onChange={(event) => {
@@ -174,9 +175,9 @@ const FilterComponents = ({
               setJobInfo(jobsList);
               setPay("");
             } else {
-            const title = parseSalaryValue(event.value)
-              ? parseSalaryValue(event.value)
-              : null;
+              const title = parseSalaryValue(event.value)
+                ? parseSalaryValue(event.value)
+                : null;
               if (title) {
                 const filteredjobsList = jobInfo.filter(
                   (job) => parseSalaryValue(job.minJdSalary) >= title
@@ -199,7 +200,7 @@ const FilterComponents = ({
   const SearchComponent = () => {
     return (
       <div>
-        <p style={{ height: "5px", fontSize: "16px" }}>
+        <p className={styles.label}>
           {companyName?.length ? "Company Name" : ""}
         </p>
         <input
@@ -224,27 +225,23 @@ const FilterComponents = ({
     );
   };
   return (
-    <Grid
-      container
-      spacing={3}
-      sx={{ display: "flex", justifyContent: "center" }}
-    >
-      <Grid item xl={2} xs={2} md={2} lg={2} pr={1}>
+    <Grid container spacing={1} className={styles.filterBody}>
+      <Grid item xl={2} lg={3} md={4} sm={6} xs={12} pr={1}>
         {rolesFilter()}
       </Grid>
-      <Grid item xl={2} xs={2} md={2} lg={2} pr={1}>
+      <Grid item xl={2} lg={3} md={4} sm={6} xs={12} pr={1}>
         {employeesFilter()}
       </Grid>
-      <Grid item xl={1.5} xs={1.5} md={1.5} lg={1.5} pr={1}>
+      <Grid item xl={2} lg={3} md={4} sm={6} xs={12} pr={1}>
         {experienceFilter()}
       </Grid>
-      <Grid item xl={1.5} xs={1.5} md={1.5} lg={1.5} pr={1}>
+      <Grid item xl={1.5} lg={3} md={4} sm={6} xs={12} pr={1}>
         {workFilter()}
       </Grid>
-      <Grid item xl={1.5} xs={1.5} md={1.5} lg={1.5} pr={1}>
+      <Grid item xl={2} lg={3} md={4} sm={6} xs={12} pr={1}>
         {payFilter()}
       </Grid>
-      <Grid item xl={1} xs={1} md={1} lg={1} pr={1}>
+      <Grid item xl={1.5} lg={3} md={4} sm={6} xs={12} pr={1}>
         {SearchComponent()}
       </Grid>
     </Grid>
