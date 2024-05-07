@@ -6,17 +6,23 @@ export default function SingleSelectComponent({
   value,
   onChange,
   options,
-  placeholder
+  placeholder,
+  work=false
 }) {
   let optionValues = [];
-
   if (Array.isArray(options)) {
     optionValues = options;
   } else {
-    optionValues = Object.keys(options)?.map((key) => ({
+    if(work){
+      optionValues = Object.entries(options).map(([key, value]) => ({
+        label: key,
+        value: value
+      }));
+    }
+    else{ optionValues = Object.keys(options)?.map((key) => ({
       label: options[key],
       value: options[key],
-    }));
+    }));}
   }
   const selectedValue = optionValues?.find((option) => ((option.value) == value ));
 
@@ -31,7 +37,7 @@ export default function SingleSelectComponent({
       groupBy={(option) => option.category}
       id="combo-box-demo"
       options={optionValues}
-      getOptionLabel={(option) => option.value}
+      getOptionLabel={(option) => option.label}
       renderInput={(params) => <TextField {...params} label={label}
       placeholder={placeholder}
                  InputLabelProps={{ shrink: false }}

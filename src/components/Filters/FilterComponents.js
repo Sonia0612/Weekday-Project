@@ -43,16 +43,21 @@ const FilterComponents = ({
         <SingleSelectComponent
           options={categoriesWithRoles}
           onChange={(event) => {
+            if (event === null) {
+              setJobInfo(jobsList);
+              setRoleName("");
+            } else {
             const title = event.value;
             if (title) {
-              const jobsList = jobInfo?.filter(
+              const filteredjobsList = jobInfo?.filter(
                 (job) => job.jobRole.toLowerCase() === title.toLowerCase()
               );
-              setJobInfo(jobsList);
+              setJobInfo(filteredjobsList);
             } else {
-              setJobInfo(jobInfo);
+              setJobInfo(jobsList);
             }
             setRoleName(title);
+          }
           }}
           label={""}
           value={roleName}
@@ -71,7 +76,12 @@ const FilterComponents = ({
         <SingleSelectComponent
           options={EMPLOYEES_FILTER_OPTIONS}
           onChange={(event) => {
+            if (event === null) {
+              setJobInfo(jobsList);
+              setEmployee("");
+            } else {
             setEmployee(event.value);
+            }
           }}
           label={""}
           value={employee}
@@ -89,17 +99,22 @@ const FilterComponents = ({
         <SingleSelectComponent
           options={EXPERIENCE_FILTER_OPTIONS}
           onChange={(event) => {
-            const title= event.value;
+            if (event === null) {
+              setJobInfo(jobsList);
+              setExperience("");
+            } else {
+            const title = event.value;
             if (title) {
-                const jobsList = jobInfo?.filter(job =>
-                  parseInt(job.minExp )=== parseInt(title)
-                );
-                setJobInfo(jobsList)
-              } else {
-                setJobInfo(jobInfo);
+              const filteredjobsList = jobInfo?.filter(
+                (job) => parseInt(job.minExp) === parseInt(title)
+              );
+              setJobInfo(filteredjobsList);
+            } else {
+              setJobInfo(jobsList);
             }
-            setExperience(event.value);
+            setExperience(title);
           }}
+        }
           label={""}
           value={experience}
           placeholder="Experience"
@@ -116,24 +131,35 @@ const FilterComponents = ({
         <SingleSelectComponent
           options={WORK_FILTER_OPTIONS}
           onChange={(event) => {
-            const title= event.value;
+            if (event === null) {
+              setJobInfo(jobsList);
+              setWork("");
+            } else {
+            const title = event.value;
             if (title) {
-                const jobsList = jobInfo?.filter(job =>
-                  (job.location).toLowerCase() === (title).toLowerCase()
-                );
-                setJobInfo(jobsList)
-              } else {
-                setJobInfo(jobInfo);
+              if (title === 'Remote') {
+                const filteredJobsList = jobInfo.filter(job => job.location.toLowerCase() === 'remote');
+                setJobInfo(filteredJobsList);
+              } else if (title === 'In-Office' || title === 'Hybrid') {
+                // Assuming 'In-Office' and 'hybrid' jobs are all non-remote jobs
+                const filteredJobsList = jobInfo.filter(job => job.location.toLowerCase() !== 'remote');
+                setJobInfo(filteredJobsList);
+              }
+            } else {
+              setJobInfo(jobsList);
             }
-            setWork(event.value)
-        }
-        }
+            setWork(title);
+          }
+          }}
           label={""}
           value={work}
           placeholder="Remote"
         />
       </div>
     );
+  };
+  const parseSalaryValue = (salaryString) => {
+    return Number(salaryString);
   };
   const payFilter = () => {
     return (
@@ -143,9 +169,28 @@ const FilterComponents = ({
         </p>
         <SingleSelectComponent
           options={PAY_FILTER_OPTIONS}
-          onChange={(event) => setPay(event.value)}
+          onChange={(event) => {
+            if (event === null) {
+              setJobInfo(jobsList);
+              setPay("");
+            } else {
+            const title = parseSalaryValue(event.value)
+              ? parseSalaryValue(event.value)
+              : null;
+              if (title) {
+                const filteredjobsList = jobInfo.filter(
+                  (job) => parseSalaryValue(job.minJdSalary) >= title
+                );
+                setJobInfo(filteredjobsList);
+              } else {
+                setJobInfo(jobsList);
+              }
+              setPay(title);
+            }
+          }}
           label={""}
           value={pay}
+          work={true}
           placeholder="Min Base Pay"
         />
       </div>
@@ -159,7 +204,18 @@ const FilterComponents = ({
         </p>
         <input
           type="text"
-          onChange={(event) => setCompanyName(event.target.value)}
+          onChange={(event) => {
+            let title = event.target.value;
+            if (title) {
+              const filteredjobsList = jobInfo?.filter((job) =>
+                job.companyName.toLowerCase().includes(title.toLowerCase())
+              );
+              setJobInfo(filteredjobsList);
+            } else {
+              setJobInfo(jobsList);
+            }
+            setCompanyName(event.target.value);
+          }}
           value={companyName}
           placeholder="Search Company Name"
           style={{ height: "50px", fontSize: "16px" }}

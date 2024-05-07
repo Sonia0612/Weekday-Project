@@ -26,15 +26,15 @@ export const WORK_FILTER_OPTIONS = {
     HYBRID:"Hybrid"
 };
 export const PAY_FILTER_OPTIONS = {
-  0:"0L",
-  10:"10L",
-  20:"20L",
-  30:"30L",
-  40:"40L",
-  50:"50L",
-  60:"60L",
-  70:"70L",
-};
+    "0L": "0",
+    "10L": "10",
+    "20L": "20",
+    "30L": "30",
+    "40L": "40",
+    "50L": "50",
+    "60L": "60",
+    "70L": "70",
+  };  
 export const ROLES_FILTER_OPTIONS = {
     'ENGINEERING': {
         'Backend': 'Backend',
